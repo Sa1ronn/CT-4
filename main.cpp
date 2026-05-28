@@ -14,12 +14,12 @@ enum MountainType {
 const string mountNames[] = {"Вулканическая", "Складчатая", "Платообразная", "Другая"};
 
 struct MountLocation {
-    string country;
+    char country[50];
     MountainType type;
 };
 
 struct Mountain {
-    string name;
+    char name[50];
     int height;
     MountLocation location;
 };
@@ -118,10 +118,9 @@ void filterByCountry(Mountain arr[]) {
     printFilteredMountains(filteredArr, filteredCount, searchCountry);
 }
 
-// ЗАДАНИЕ 1. Чтение из текстового файла
 void updateHeightsFromTextFile(Mountain arr[], string filename) {
     ifstream fin;
-    fin.open(filename); // Открываем файл
+    fin.open(filename);
 
     if (fin.is_open()) {
         string searchName;
@@ -130,7 +129,6 @@ void updateHeightsFromTextFile(Mountain arr[], string filename) {
         while (!fin.eof()) {
             fin >> searchName >> newHeight;
 
-            // Ищем совпадение по названию горы
             for (int i = 0; i < mountCount; i++) {
                 if (arr[i].name == searchName) {
                     arr[i].height = newHeight;
@@ -155,7 +153,6 @@ void loadFromBinaryFile(Mountain arr[], string filename) {
     fstream in(filename, ios::binary | ios::in);
 
     if (in.is_open()) {
-        // Считываем информацию в объект (наш массив)
         in.read((char*)arr, sizeof(Mountain) * mountCount);
     }
     in.close();
@@ -186,7 +183,7 @@ int main() {
         {"Этна", 3357, {"Италия", VOLCANO}},
         {"Олимп", 2917, {"Греция", OTHER}}
     };
-
+    string filename = "text.txt";
     int choice;
 
     do {
@@ -195,6 +192,9 @@ int main() {
         cout << "3. Вывести страны трех восьмитысячников" << endl;
         cout << "4. Изменить данные горы (по высоте)" << endl;
         cout << "5. Найти горы по стране" << endl;
+        cout << "6. Считать данные из файла" << endl;
+        cout << "7. Считать данные из бинарного файла" << endl;
+        cout << "8. Записать данные в бинарный файл" << endl;
         cout << "0. Выход" << endl;
         cout << "Выберите действие: ";
         cin >> choice;
@@ -218,6 +218,15 @@ int main() {
                 break;
             case 5:
                 filterByCountry(mountains);
+                break;
+            case 6:
+                updateHeightsFromTextFile(mountains, filename);
+                break;
+            case 7:
+                loadFromBinaryFile(mountains, filename);
+                break;
+            case 8:
+                saveToBinaryFile(mountains, filename);
                 break;
             case 0:
                 cout << "Завершение программы" << endl;
