@@ -128,7 +128,7 @@ void updateHeightsFromTextFile(Mountain arr[], string filename) {
 
         while (!fin.eof()) {
             fin >> searchName >> newHeight;
-
+            cout << "Прочитано: " << searchName << " - " << newHeight << endl;
             for (int i = 0; i < mountCount; i++) {
                 if (arr[i].name == searchName) {
                     arr[i].height = newHeight;
@@ -146,6 +146,9 @@ void saveToBinaryFile(Mountain arr[], string filename) {
     if (out.is_open()) {
         out.write((char*)arr, sizeof(Mountain) * mountCount);
     }
+    else {
+        cout << "Ошибка" << endl;
+    }
     out.close();
 }
 
@@ -154,6 +157,9 @@ void loadFromBinaryFile(Mountain arr[], string filename) {
 
     if (in.is_open()) {
         in.read((char*)arr, sizeof(Mountain) * mountCount);
+    }
+    else {
+        cout << "Ошибка" << endl;
     }
     in.close();
 }
@@ -184,6 +190,7 @@ int main() {
         {"Олимп", 2917, {"Греция", OTHER}}
     };
     string filename = "text.txt";
+    string binfilename = "text.bin";
     int choice;
 
     do {
@@ -223,10 +230,10 @@ int main() {
                 updateHeightsFromTextFile(mountains, filename);
                 break;
             case 7:
-                loadFromBinaryFile(mountains, filename);
+                loadFromBinaryFile(mountains, binfilename);
                 break;
             case 8:
-                saveToBinaryFile(mountains, filename);
+                saveToBinaryFile(mountains, binfilename);
                 break;
             case 0:
                 cout << "Завершение программы" << endl;
